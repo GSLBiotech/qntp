@@ -20,7 +20,7 @@
 #include <QtGlobal>
 
 #ifndef QNTP_EXPORT
-#  if defined(QT_DLL)
+#  ifdef Q_OS_WIN
 #    if defined(QNTP_BUILDING)
 #      define QNTP_EXPORT Q_DECL_EXPORT
 #    else
