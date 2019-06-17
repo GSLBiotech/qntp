@@ -1,9 +1,35 @@
+projectsDir = $$(REPO)/projects
+
+include( $$projectsDir/functions.pri )
+BUILD_TYPE = $$systemBuildType()
+
 TEMPLATE = lib
 TARGET   = qntp
 QT      -= gui
 QT      += network
 
-MOC_DIR = temp/moc
+win32* {
+  CONFIG  += dll
+}
+
+mac {
+  #build a framework, not a dylib
+  CONFIG += lib_bundle
+
+  QMAKE_FRAMEWORK_BUNDLE_NAME = qntp
+  QMAKE_FRAMEWORK_VERSION     = 1
+
+  #Use install_name_tool so application that links against the framework finds it within the bundle.
+  QMAKE_POST_LINK = install_name_tool -id @rpath/qntp.framework/Versions/$${QMAKE_FRAMEWORK_VERSION}/qntp $$BUILD_TYPE/qntp.framework/qntp 
+}
+
+
+CONFIG += $$BUILD_TYPE
+include( $$projectsDir/options.pri )
+include( $$projectsDir/projectIncludes/quiet.pri )
+mac:include( $$projectsDir/projectIncludes/mac.pri )
+
+include( common.pri )
 
 INCLUDEPATH += \
   include \
