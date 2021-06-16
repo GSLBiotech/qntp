@@ -1,7 +1,5 @@
-projectsDir = $$(REPO)/projects
-
-include( $$projectsDir/functions.pri )
-BUILD_TYPE = $$systemBuildType()
+# debug or release. defined in buildQntp
+BUILD_TYPE = $$(GSL_BUILD_TYPE)
 
 TEMPLATE = lib
 TARGET   = qntp
@@ -23,11 +21,8 @@ mac {
   QMAKE_POST_LINK = install_name_tool -id @rpath/qntp.framework/Versions/$${QMAKE_FRAMEWORK_VERSION}/qntp $$BUILD_TYPE/qntp.framework/qntp 
 }
 
-
 CONFIG += $$BUILD_TYPE
-include( $$projectsDir/options.pri )
-include( $$projectsDir/projectIncludes/quiet.pri )
-mac:include( $$projectsDir/projectIncludes/mac.pri )
+mac:include( mac.pri )
 
 include( common.pri )
 
